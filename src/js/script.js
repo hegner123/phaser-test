@@ -33,11 +33,6 @@ class GameButton extends Phaser.GameObjects.Rectangle {
 
 }
 
-
-
-
-
-
 class NewGame extends Phaser.Scene{
     preload() {}
 
