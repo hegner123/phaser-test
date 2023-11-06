@@ -1,4 +1,5 @@
 import GameWindow from "../constants";
+import Phaser from "phaser";
 
 export class MenuButton extends Phaser.GameObjects.GameObject {
   constructor(
@@ -11,7 +12,7 @@ export class MenuButton extends Phaser.GameObjects.GameObject {
     hoverFillStyle: number,
     alpha: number,
     text: string,
-    loadScene: string
+    loadScene: string | Phaser.Scene
   ) {
     super(scene, "MenuButton");
     const defaultButton = new Phaser.GameObjects.Rectangle(

@@ -7,4 +7,18 @@ const GameWindow = {
     : 0,
 };
 
+export const physicsConfig = {
+  gravity: { y: 200 },
+  speed: 2,
+};
+
+let placeholderImageElement = document.createElement("img");
+placeholderImageElement.src = "https://via.placeholder.com/150";
+placeholderImageElement.id = "placeholder";
+placeholderImageElement.style.display = "none";
+document.body.appendChild(placeholderImageElement);
+
+export { placeholderImageElement };
+
+
 export default GameWindow;
