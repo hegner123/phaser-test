@@ -7,9 +7,28 @@ const GameWindow = {
     : 0,
 };
 
+const row = 56;
+const leftCode = 37;
+const upCode = 38;
+const rightCode = 39;
+const downCode = 40;
+
+export const keyCodes = {
+  left: leftCode,
+  up: upCode,
+  right: rightCode,
+  down: downCode,
+};
+
 export const physicsConfig = {
   gravity: { y: 200 },
   speed: 2,
+};
+
+export const SPRITE_SHEET = {
+  idle: 0,
+  idleBounce: row,
+  walking: row * 2,
 };
 
 let placeholderImageElement = document.createElement("img");
