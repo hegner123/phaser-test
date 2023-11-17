@@ -17,7 +17,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   ) {
     super(scene, x, y, texture, frame);
   }
-  speed = 1;
+  speed = 10;
   moveLeft() {
     this.x -= this.speed;
   }

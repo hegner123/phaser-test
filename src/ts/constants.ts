@@ -7,7 +7,6 @@ const GameWindow = {
     : 0,
 };
 
-const row = 56;
 const leftCode = 37;
 const upCode = 38;
 const rightCode = 39;
@@ -24,12 +23,18 @@ export const physicsConfig = {
   gravity: { y: 200 },
   speed: 2,
 };
-
-export const SPRITE_SHEET = {
-  idle: 0,
-  idleBounce: row,
-  walking: row * 2,
-};
+export function animationFrame(rowName, frameIndex) {
+  const row = 56;
+  const frameArray = Array.apply(null, Array(row)).map(function (y, i) {
+    return i;
+  });
+  const spriteSheetConstants = {
+    idle: 0,
+    idleBounce: row,
+    walking: row * 2,
+  };
+  return spriteSheetConstants[rowName] + frameIndex;
+}
 
 let placeholderImageElement = document.createElement("img");
 placeholderImageElement.src = "https://via.placeholder.com/150";

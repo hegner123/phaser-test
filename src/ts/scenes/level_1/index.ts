@@ -1,13 +1,14 @@
-import Phaser, { Textures } from "phaser";
+import Phaser, { Textures, GameObjects } from "phaser";
 import { Level } from "../../components/world";
 import { Player, PlayerInterface } from "../../components/player";
-import { SPRITE_SHEET, keyCodes } from "../../constants";
+import { keyCodes, animationFrame } from "../../constants";
 
 export class Level_1_Scene_1 extends Phaser.Scene {
   constructor() {
     super({ key: "Level_1_Scene_1" });
   }
   PlayerSprite: PlayerInterface;
+  levelMap: GameObjects.Sprite;
   keys: any;
   keyLeft: boolean;
   keyRight: boolean;
@@ -15,20 +16,28 @@ export class Level_1_Scene_1 extends Phaser.Scene {
   keyDown: boolean;
   preload() {
     let sprites;
+    let levelMap;
     if (!document.querySelector("#character_spriteSheet")) {
       console.log("no spritesheet");
     } else {
       sprites = document.querySelector("#character_spriteSheet");
     }
-
+    if (!document.querySelector("#level_1_tilemap")) {
+      console.log("no tilemap");
+    } else {
+      levelMap = document.querySelector("#level_1_tilemap");
+    }
     this.textures.addSpriteSheet("playerSprite", sprites, {
       frameWidth: 32,
       frameHeight: 64,
     });
+    this.textures.addImage("main_level", levelMap);
   }
   create() {
     const GameWorld = new Level(this, {});
+    this.levelMap = new GameObjects.Sprite(this, 0, 0, "main_level");
     this.PlayerSprite = new Player(this, 100, 100, "playerSprite");
+    console.log(this.levelMap);
     this.keys = this.input.keyboard?.addKeys(
       "RIGHT, LEFT, UP, DOWN",
       true,
@@ -38,8 +47,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "idleRight",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.idle,
-        end: SPRITE_SHEET.idle,
+        start: animationFrame("idle", 0),
+        end: animationFrame("idle", 0),
       }),
       frameRate: 10,
       repeat: -1,
@@ -47,8 +56,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "idleUp",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.idle + 1,
-        end: SPRITE_SHEET.idle + 1,
+        start: animationFrame("idle", 1),
+        end: animationFrame("idle", 1),
       }),
       frameRate: 10,
       repeat: -1,
@@ -56,8 +65,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "idleLeft",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.idle + 2,
-        end: SPRITE_SHEET.idle + 2,
+        start: animationFrame("idle", 2),
+        end: animationFrame("idle", 2),
       }),
       frameRate: 10,
       repeat: -1,
@@ -65,8 +74,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "idleDown",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.idle + 3,
-        end: SPRITE_SHEET.idle + 3,
+        start: animationFrame("idle", 3),
+        end: animationFrame("idle", 3),
       }),
       frameRate: 10,
       repeat: -1,
@@ -74,8 +83,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "walkRight",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.walking,
-        end: SPRITE_SHEET.walking + 5,
+        start: animationFrame("walking", 0),
+        end: animationFrame("walking", 5),
       }),
       frameRate: 10,
       repeat: -1,
@@ -83,8 +92,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "walkUp",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.walking + 6,
-        end: SPRITE_SHEET.walking + 11,
+        start: animationFrame("walking", 6),
+        end: animationFrame("walking", 11),
       }),
       frameRate: 10,
       repeat: -1,
@@ -92,8 +101,8 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "walkLeft",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.walking + 12,
-        end: SPRITE_SHEET.walking + 17,
+        start: animationFrame("walking", 12),
+        end: animationFrame("walking", 17),
       }),
       frameRate: 10,
       repeat: -1,
@@ -101,13 +110,13 @@ export class Level_1_Scene_1 extends Phaser.Scene {
     this.anims.create({
       key: "walkDown",
       frames: this.anims.generateFrameNumbers("playerSprite", {
-        start: SPRITE_SHEET.walking + 18,
-        end: SPRITE_SHEET.walking + 22,
+        start: animationFrame("walking", 18),
+        end: animationFrame("walking", 23),
       }),
       frameRate: 10,
       repeat: -1,
     });
-
+    this.add.existing(this.levelMap);
     this.add.existing(this.PlayerSprite);
   }
   update(time: number, delta: number): void {
@@ -131,6 +140,7 @@ export class Level_1_Scene_1 extends Phaser.Scene {
       this.PlayerSprite.moveDown();
       this.PlayerSprite.anims.play("walkDown", true);
     }
+    this.cameras.main.startFollow(this.PlayerSprite);
     if (!this.keyRight && !this.keyLeft && !this.keyUp && !this.keyDown) {
       switch (this.keys.RIGHT.plugin.prevCode) {
         case keyCodes.right:

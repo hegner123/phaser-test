@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { MenuButton, TextField } from "./components/userInterface";
 import GameWindow from "./constants";
 import Scenes from "./scenes";
 
